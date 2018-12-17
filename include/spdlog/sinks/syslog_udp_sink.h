@@ -22,12 +22,12 @@ namespace spdlog {
             enum priority {
 //                EMERG = 0,
 //                ALERT = 1,
-                        CRIT = 2,
-                ERR = 3,
-                WARNING = 4,
+                        kCRIT = 2,
+                kERR = 3,
+                kWARNING = 4,
 //                NOTICE = 5,
-                        INFO = 6,
-                DEBUG = 7,
+                        kINFO = 6,
+                kDEBUG = 7,
             };
         }
 /**
@@ -46,13 +46,13 @@ namespace spdlog {
                       fd_(fd),
                       sockServerAddrLen_(std::min(sockServerAddrLen, (socklen_t) sizeof(sockServerAddr_))),
                       syslog_facility_(syslog_facility) {
-                priorities_[static_cast<size_t>(level::trace)] = syslog_udp::priority::DEBUG;
-                priorities_[static_cast<size_t>(level::debug)] = syslog_udp::priority::DEBUG;
-                priorities_[static_cast<size_t>(level::info)] = syslog_udp::priority::INFO;
-                priorities_[static_cast<size_t>(level::warn)] = syslog_udp::priority::WARNING;
-                priorities_[static_cast<size_t>(level::err)] = syslog_udp::priority::ERR;
-                priorities_[static_cast<size_t>(level::critical)] = syslog_udp::priority::CRIT;
-                priorities_[static_cast<size_t>(level::off)] = syslog_udp::priority::INFO;
+                priorities_[static_cast<size_t>(level::trace)] = syslog_udp::priority::kDEBUG;
+                priorities_[static_cast<size_t>(level::debug)] = syslog_udp::priority::kDEBUG;
+                priorities_[static_cast<size_t>(level::info)] = syslog_udp::priority::kINFO;
+                priorities_[static_cast<size_t>(level::warn)] = syslog_udp::priority::kWARNING;
+                priorities_[static_cast<size_t>(level::err)] = syslog_udp::priority::kERR;
+                priorities_[static_cast<size_t>(level::critical)] = syslog_udp::priority::kCRIT;
+                priorities_[static_cast<size_t>(level::off)] = syslog_udp::priority::kINFO;
 
                 memcpy(&sockServerAddr_, sockServerAddr, sockServerAddrLen_);
             }
@@ -83,7 +83,7 @@ namespace spdlog {
                 size_t len = strftime(datestr, sizeof(datestr) - 1, "%Y-%m-%dT%T.00Z", &a_tm);
                 datestr[len] = '\0';
 
-                int buflen = snprintf(tmpbuf, sizeof(tmpbuf), "<%d>1 %s %s %s[%d] - ",
+                int buflen = snprintf(tmpbuf, sizeof(tmpbuf), "<%d>1 %s %s %s[%d] - - ",
                                       prival,
                                       datestr,
                                       (host_.empty()) ? "-" : host_.c_str(),
